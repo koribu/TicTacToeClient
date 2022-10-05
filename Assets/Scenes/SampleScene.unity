@@ -861,6 +861,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 896cee88d3769a94ea199d88e3af2cbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _usernameInput: {fileID: 1777803044}
+  _passwordInput: {fileID: 142843771}
+  _loginButton: {fileID: 1343912986}
+  _createAccountButton: {fileID: 1328282135}
+  _networkClient: {fileID: 582029086}
 --- !u!4 &1159928962
 Transform:
   m_ObjectHideFlags: 0
@@ -1091,7 +1096,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1328282138}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1159928961}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: CreateAccount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1328282138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1212,7 +1229,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1343912989}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1159928961}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: SendLoginInfo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1343912989
 MonoBehaviour:
   m_ObjectHideFlags: 0
