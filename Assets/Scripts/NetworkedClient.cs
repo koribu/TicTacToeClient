@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class NetworkedClient : MonoBehaviour
 {
+    static public class ServerFeedBackSignifierList
+    {
+        public const int LoginSuccess = 0;
+        public const int LoginFailure = 1;
+        public const int CreateAccountSuccess = 2;
+        public const int CreateAccountFailure = 3;
+
+    }
 
     int connectionID;
     int maxConnections = 1000;
@@ -17,10 +26,13 @@ public class NetworkedClient : MonoBehaviour
     bool isConnected = false;
     int ourClientID;
 
+    GameManager _gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
         Connect();
+        _gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -79,7 +91,7 @@ public class NetworkedClient : MonoBehaviour
             hostID = NetworkTransport.AddHost(topology, 0);
             Debug.Log("Socket open.  Host ID = " + hostID);
 
-            connectionID = NetworkTransport.Connect(hostID, "10.0.236.8", socketPort, 0, out error); // server is local on network
+            connectionID = NetworkTransport.Connect(hostID, "10.0.251.85", socketPort, 0, out error); // server is local on network
 
             if (error == 0)
             {
@@ -107,6 +119,13 @@ public class NetworkedClient : MonoBehaviour
     private void ProcessRecievedMsg(string msg, int id)
     {
         Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
+
+        string[] msgs = msg.Split(',');
+
+        if (int.Parse(msgs[0]) == ServerFeedBackSignifierList.LoginSuccess)
+        {
+            _gameManager.LoginToRoomJoinPanel();
+        }
     }
 
     public bool IsConnected()

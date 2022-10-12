@@ -6,6 +6,13 @@ using TMPro;
 
 public class InputManager : MonoBehaviour
 {
+    static public class ClientMessageSignifierList
+    {
+        public const int Login = 0;
+        public const int CreateAccount = 1;
+        public const int JoinRoom = 2;
+    }
+
     [SerializeField]
     private GameObject _usernameInput, _passwordInput, _loginButton, _createAccountButton;
     [SerializeField]
@@ -28,7 +35,7 @@ public class InputManager : MonoBehaviour
         string password = _passwordInput.GetComponent<TMP_InputField>().text;
         if (username.Length > 3 && password.Length > 3)
         {
-            _networkClient.SendMessageToHost(0 + "," + username + "," + password);
+            _networkClient.SendMessageToHost(ClientMessageSignifierList.Login + "," + username + "," + password);
             Debug.Log(0 + "," + username + "," + password);
         }
     }
@@ -38,8 +45,19 @@ public class InputManager : MonoBehaviour
         string password = _passwordInput.GetComponent<TMP_InputField>().text;
         if (username.Length > 3 && password.Length > 3)
         {
-            _networkClient.SendMessageToHost(1 + "," + username + "," + password);
+            _networkClient.SendMessageToHost(ClientMessageSignifierList.CreateAccount + "," + username + "," + password);
         }
         Debug.Log(1 + "," + username + "," + password);
+    }
+
+    public void RoomJoinInfo()
+    {
+        string username = _usernameInput.GetComponent<TMP_InputField>().text;
+
+        if (username.Length > 3)
+        {
+            _networkClient.SendMessageToHost(ClientMessageSignifierList.JoinRoom + "," + username);
+        }
+        Debug.Log(1 + "," + username );
     }
 }
