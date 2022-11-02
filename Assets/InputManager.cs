@@ -14,7 +14,7 @@ public class InputManager : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject _usernameInput, _passwordInput, _loginButton, _createAccountButton;
+    private GameObject _usernameInput, _passwordInput, _roomNameInput, _loginButton, _createAccountButton;
     [SerializeField]
     NetworkedClient _networkClient;
     // Start is called before the first frame update
@@ -52,12 +52,11 @@ public class InputManager : MonoBehaviour
 
     public void RoomJoinInfo()
     {
-        string username = _usernameInput.GetComponent<TMP_InputField>().text;
+        string roomName = _roomNameInput.GetComponent<TMP_InputField>().text;
 
-        if (username.Length > 3)
+        if (roomName.Length > 3)
         {
-            _networkClient.SendMessageToHost(ClientMessageSignifierList.JoinRoom + "," + username);
+            _networkClient.SendMessageToHost(ClientMessageSignifierList.JoinRoom + "," + roomName);
         }
-        Debug.Log(1 + "," + username );
     }
 }

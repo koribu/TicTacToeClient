@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -7,7 +8,9 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject _loginPanel, _roomLoginPanel;
+    GameObject _loginPanel, _roomLoginPanel, _gamePanel;
+    [SerializeField]
+    TextMeshProUGUI player1Name, player2Name, roomName;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,5 +28,29 @@ public class GameManager : MonoBehaviour
         _loginPanel.SetActive(false);
         _roomLoginPanel.SetActive(true);
     }
-  
+
+    public void EnterRoomAsFirstPlayerState(string playerName,string name)
+    {
+        _roomLoginPanel.SetActive(false);
+        _gamePanel.SetActive(true);
+        Debug.Log(playerName + "---" + name);
+        roomName.text = name;
+        player1Name.text = playerName;
+    }
+    public void EnterRoomAsSecondPlayerState(string currentPlayerName,string otherPlayerName, string name)
+    {
+        _roomLoginPanel.SetActive(false);
+        _gamePanel.SetActive(true);
+
+        player1Name.text = currentPlayerName;
+        player2Name.text = otherPlayerName;
+        roomName.text = name;
+    }
+    public void LeaveRoomState()
+    {
+        _roomLoginPanel.SetActive(true);
+        _gamePanel.SetActive(false);
+    }
+
+
 }

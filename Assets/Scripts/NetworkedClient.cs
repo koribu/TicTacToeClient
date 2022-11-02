@@ -13,7 +13,8 @@ public class NetworkedClient : MonoBehaviour
         public const int LoginFailure = 1;
         public const int CreateAccountSuccess = 2;
         public const int CreateAccountFailure = 3;
-
+        public const int JoinRoomAsPlayer1 = 4;
+        public const int JoinRoomAsPlayer2 = 5;
     }
 
     int connectionID;
@@ -91,7 +92,7 @@ public class NetworkedClient : MonoBehaviour
             hostID = NetworkTransport.AddHost(topology, 0);
             Debug.Log("Socket open.  Host ID = " + hostID);
 
-            connectionID = NetworkTransport.Connect(hostID, "10.0.251.85", socketPort, 0, out error); // server is local on network
+            connectionID = NetworkTransport.Connect(hostID, "10.0.235.189", socketPort, 0, out error); // server is local on network
 
             if (error == 0)
             {
@@ -121,13 +122,20 @@ public class NetworkedClient : MonoBehaviour
         Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
 
         string[] msgs = msg.Split(',');
-
-        if (int.Parse(msgs[0]) == ServerFeedBackSignifierList.LoginSuccess)
+        int signifier = int.Parse(msgs[0]);
+        if (signifier == ServerFeedBackSignifierList.LoginSuccess)
         {
             _gameManager.LoginToRoomJoinPanel();
         }
+        else if (signifier == ServerFeedBackSignifierList.JoinRoomAsPlayer1)// || signifier == ServerFeedBackSignifierList.JoinRoomAsObserver)
+        {
+            _gameManager.EnterRoomAsFirstPlayerState(msgs[1], msgs[2]);
+        }
+        else if (signifier == ServerFeedBackSignifierList.JoinRoomAsPlayer2)
+        {
+            _gameManager.EnterRoomAsSecondPlayerState(msgs[1], msgs[2], msgs[3]);
+        }
     }
-
     public bool IsConnected()
     {
         return isConnected;
