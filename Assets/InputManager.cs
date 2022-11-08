@@ -6,12 +6,7 @@ using TMPro;
 
 public class InputManager : MonoBehaviour
 {
-    static public class ClientMessageSignifierList
-    {
-        public const int Login = 0;
-        public const int CreateAccount = 1;
-        public const int JoinRoom = 2;
-    }
+    
 
     [SerializeField]
     private GameObject _usernameInput, _passwordInput, _roomNameInput, _loginButton, _createAccountButton;
