@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
+
+
 
 public class GameManager : MonoBehaviour
 {
@@ -11,10 +12,13 @@ public class GameManager : MonoBehaviour
     GameObject _loginPanel, _roomLoginPanel, _gamePanel;
     [SerializeField]
     TextMeshProUGUI player1Name, player2Name, roomName;
+
+    [SerializeField]
+    TextMeshProUGUI[] gameButtons;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -50,6 +54,11 @@ public class GameManager : MonoBehaviour
     {
         _roomLoginPanel.SetActive(true);
         _gamePanel.SetActive(false);
+    }
+
+    public void PlayMove(int i)
+    {
+        gameButtons[i].text = "X";
     }
 
 
