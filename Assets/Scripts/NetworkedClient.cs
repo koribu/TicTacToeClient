@@ -93,7 +93,7 @@ public class NetworkedClient : MonoBehaviour
             hostID = NetworkTransport.AddHost(topology, 0);
             Debug.Log("Socket open.  Host ID = " + hostID);
 
-            connectionID = NetworkTransport.Connect(hostID, "192.168.0.45", socketPort, 0, out error); // server is local on network
+            connectionID = NetworkTransport.Connect(hostID, "", socketPort, 0, out error); // server is local on network
 
             if (error == 0)
             {

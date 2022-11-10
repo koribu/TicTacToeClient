@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject _loginPanel, _roomLoginPanel, _gamePanel;
+    GameObject _loginPanel, _roomLoginPanel, _gamePanel,_gameOverPanel;
     [SerializeField]
     TextMeshProUGUI player1Name, player2Name, roomName;
 
@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     NetworkedClient _networkClient;
 
-    private int[] gameStatus = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     bool isFirstPlayer, isGameStart = false;
     int isYourTurn = 0;
@@ -68,6 +67,10 @@ public class GameManager : MonoBehaviour
     {
         _roomLoginPanel.SetActive(true);
         _gamePanel.SetActive(false);
+        _gameOverPanel.SetActive(false);
+
+        _networkClient.SendMessageToHost(ClientMessageSignifierList.LeaveRoom + "," + "Player is leaving the room");
+
     }
 
     public void PlayMove(int i)
@@ -112,7 +115,13 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("GameEnded");
             isGameStart = false;
-            //LeaveRoomState();
+
+            _gameOverPanel.SetActive(true);
+            if (isYourTurn == 1)
+                _gameOverPanel.GetComponentInChildren<TextMeshProUGUI>().text = player2Name.text + " Won!";
+            else
+                _gameOverPanel.GetComponentInChildren<TextMeshProUGUI>().text = player1Name.text + " Won!";
+            
         }
            
     }
