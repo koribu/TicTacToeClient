@@ -8,6 +8,21 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+    static public class TicTacToeMoveSignifier
+    {
+        public const int EmptySpot = 0;
+        public const int X = 1;
+        public const int O = 2;
+    }
+
+    static public class WhoIsNextSignifier
+    {
+        public const int OpponentsTurn = 0;
+        public const int MyTurn = 1;
+
+    }
+
+
     [SerializeField]
     GameObject _loginPanel, _roomLoginPanel, _gamePanel,_gameOverPanel;
     [SerializeField]
@@ -103,11 +118,11 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < gameButtons.Length; i++)
         {
             int spotCondition = int.Parse(msgs[i + 3]);
-            if (spotCondition == 0)
+            if (spotCondition == TicTacToeMoveSignifier.EmptySpot)
                 gameButtons[i].text = "";
-            else if (spotCondition == 1)
+            else if (spotCondition == TicTacToeMoveSignifier.X)
                 gameButtons[i].text = "X";
-            else 
+            else //(spotCondition == TicTacToeMoveSignifier.O)
                 gameButtons[i].text = "O";
         }
 
@@ -117,9 +132,9 @@ public class GameManager : MonoBehaviour
             isGameStart = false;
 
             _gameOverPanel.SetActive(true);
-            if (isYourTurn == 1)
+            if (isYourTurn == WhoIsNextSignifier.MyTurn)
                 _gameOverPanel.GetComponentInChildren<TextMeshProUGUI>().text = player2Name.text + " Won!";
-            else
+            else //(WhoIsNextSignifier.OpponentsTurn)
                 _gameOverPanel.GetComponentInChildren<TextMeshProUGUI>().text = player1Name.text + " Won!";
             
         }
