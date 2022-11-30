@@ -7,16 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class NetworkedClient : MonoBehaviour
 {
-    static public class ServerFeedBackSignifierList
-    {
-        public const int LoginSuccess = 0;
-        public const int LoginFailure = 1;
-        public const int CreateAccountSuccess = 2;
-        public const int CreateAccountFailure = 3;
-        public const int JoinRoomAsPlayer1 = 4;
-        public const int JoinRoomAsPlayer2 = 5;
-        public const int GameUpdate = 6;
-    }
+
 
     int connectionID;
     int maxConnections = 1000;
@@ -33,8 +24,18 @@ public class NetworkedClient : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Connect();
-        
+        if (NetworkedClientProcessing.GetNetworkedClient() == null)
+        {
+            DontDestroyOnLoad(this.gameObject);
+            NetworkedClientProcessing.SetNetworkedClient(this);
+            Connect();
+        }
+        else
+        {
+            Debug.Log("Singleton-ish architecture violation detected, investigate where NetworkedClient.cs Start() is being called.  Are you creating a second instance of the NetworkedClient game object or has the NetworkedClient.cs been attached to more than one game object?");
+            Destroy(this.gameObject);
+        }
+
     }
 
     // Update is called once per frame
@@ -82,26 +83,21 @@ public class NetworkedClient : MonoBehaviour
 
         if (!isConnected)
         {
-            Debug.Log("Attempting to create connection");
-
             NetworkTransport.Init();
-
             ConnectionConfig config = new ConnectionConfig();
             reliableChannelID = config.AddChannel(QosType.Reliable);
             unreliableChannelID = config.AddChannel(QosType.Unreliable);
             HostTopology topology = new HostTopology(config, maxConnections);
             hostID = NetworkTransport.AddHost(topology, 0);
-            Debug.Log("Socket open.  Host ID = " + hostID);
-
-            connectionID = NetworkTransport.Connect(hostID, "10.0.230.198", socketPort, 0, out error); // server is local on network
+            connectionID = NetworkTransport.Connect(hostID, "10.0.236.116", socketPort, 0, out error); // server is local on network
 
             if (error == 0)
             {
                 isConnected = true;
-
-                Debug.Log("Connected, id = " + connectionID);
-
+                Debug.Log("Network client init successful, waiting for server connection.");
             }
+            else
+                Debug.Log("Network client init failed!");
         }
     }
 

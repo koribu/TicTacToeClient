@@ -4,22 +4,8 @@ using UnityEngine;
 
 static public class NetworkedClientProcessing
 {
-    static public class ServerFeedBackSignifierList
-    {
-        public const int LoginSuccess = 0;
-        public const int LoginFailure = 1;
-        public const int CreateAccountSuccess = 2;
-        public const int CreateAccountFailure = 3;
-        public const int JoinRoomAsPlayer1 = 4;
-        public const int JoinRoomAsPlayer2 = 5;
-        public const int GameUpdate = 6;
-    }
 
-    static GameManager _gameManager = MonoBehaviour.FindObjectOfType<GameManager>();
-
-
-
-
+   
     static public void ProcessRecievedMsg(string msg, int id)
     {
         Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
@@ -43,4 +29,42 @@ static public class NetworkedClientProcessing
             _gameManager.UpdateGame(msgs);
         }
     }
+    static public void SendMessageToHost(string msg)
+    {
+        networkedClient.SendMessageToHost(msg);
+    }
+
+    #region Setup
+    static NetworkedClient networkedClient;
+    static GameManager _gameManager;
+
+    static public void SetNetworkedClient(NetworkedClient NetworkedClient)
+    {
+        networkedClient = NetworkedClient;
+    }
+    static public NetworkedClient GetNetworkedClient()
+    {
+        return networkedClient;
+    }
+    static public void SetGameLogic(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+
+    #endregion
+
+    #region Protocol Signifiers
+    static public class ServerFeedBackSignifierList
+    {
+        public const int LoginSuccess = 0;
+        public const int LoginFailure = 1;
+        public const int CreateAccountSuccess = 2;
+        public const int CreateAccountFailure = 3;
+        public const int JoinRoomAsPlayer1 = 4;
+        public const int JoinRoomAsPlayer2 = 5;
+        public const int GameUpdate = 6;
+    }
+
+    #endregion
+
 }
