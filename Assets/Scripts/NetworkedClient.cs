@@ -28,13 +28,13 @@ public class NetworkedClient : MonoBehaviour
     bool isConnected = false;
     int ourClientID;
 
-    GameManager _gameManager;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         Connect();
-        _gameManager = FindObjectOfType<GameManager>();
+        
     }
 
     // Update is called once per frame
@@ -66,7 +66,7 @@ public class NetworkedClient : MonoBehaviour
                     break;
                 case NetworkEventType.DataEvent:
                     string msg = Encoding.Unicode.GetString(recBuffer, 0, dataSize);
-                    ProcessRecievedMsg(msg, recConnectionID);
+                    NetworkedClientProcessing.ProcessRecievedMsg(msg, recConnectionID);
                     //Debug.Log("got msg = " + msg);
                     break;
                 case NetworkEventType.DisconnectEvent:
@@ -93,7 +93,7 @@ public class NetworkedClient : MonoBehaviour
             hostID = NetworkTransport.AddHost(topology, 0);
             Debug.Log("Socket open.  Host ID = " + hostID);
 
-            connectionID = NetworkTransport.Connect(hostID, "", socketPort, 0, out error); // server is local on network
+            connectionID = NetworkTransport.Connect(hostID, "10.0.230.198", socketPort, 0, out error); // server is local on network
 
             if (error == 0)
             {
@@ -117,30 +117,8 @@ public class NetworkedClient : MonoBehaviour
         byte[] buffer = Encoding.Unicode.GetBytes(msg);
         NetworkTransport.Send(hostID, connectionID, reliableChannelID, buffer, msg.Length * sizeof(char), out error);
     }
-
-    private void ProcessRecievedMsg(string msg, int id)
-    {
-        Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
-
-        string[] msgs = msg.Split(',');
-        int signifier = int.Parse(msgs[0]);
-        if (signifier == ServerFeedBackSignifierList.LoginSuccess)
-        {
-            _gameManager.LoginToRoomJoinPanel();
-        }
-        else if (signifier == ServerFeedBackSignifierList.JoinRoomAsPlayer1)// || signifier == ServerFeedBackSignifierList.JoinRoomAsObserver)
-        {
-            _gameManager.EnterRoomAsFirstPlayerState(msgs[1], msgs[2]);
-        }
-        else if (signifier == ServerFeedBackSignifierList.JoinRoomAsPlayer2)
-        {
-            _gameManager.EnterRoomAsSecondPlayerState(msgs[1], msgs[2], msgs[3]);
-        }
-        else if (signifier == ServerFeedBackSignifierList.GameUpdate)
-        {
-            _gameManager.UpdateGame(msgs);
-        }
-    }
+    
+    
     public bool IsConnected()
     {
         return isConnected;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NetworkedClientProcessing : MonoBehaviour
+static public class NetworkedClientProcessing
 {
     static public class ServerFeedBackSignifierList
     {
@@ -15,7 +15,12 @@ public class NetworkedClientProcessing : MonoBehaviour
         public const int GameUpdate = 6;
     }
 
-    private void ProcessRecievedMsg(string msg, int id)
+    static GameManager _gameManager = MonoBehaviour.FindObjectOfType<GameManager>();
+
+
+
+
+    static public void ProcessRecievedMsg(string msg, int id)
     {
         Debug.Log("msg recieved = " + msg + ".  connection id = " + id);
 
