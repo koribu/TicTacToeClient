@@ -46,7 +46,7 @@ static public class NetworkedClientProcessing
     {
         return networkedClient;
     }
-    static public void SetGameLogic(GameManager gameManager)
+    static public void SetGameManager(GameManager gameManager)
     {
         _gameManager = gameManager;
     }

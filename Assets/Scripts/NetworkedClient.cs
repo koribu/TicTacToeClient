@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class NetworkedClient : MonoBehaviour
 {
-
+    static GameManager _gameManager;
 
     int connectionID;
     int maxConnections = 1000;
@@ -28,11 +28,11 @@ public class NetworkedClient : MonoBehaviour
         {
             DontDestroyOnLoad(this.gameObject);
             NetworkedClientProcessing.SetNetworkedClient(this);
+            NetworkedClientProcessing.SetGameManager(FindObjectOfType<GameManager>());
             Connect();
         }
         else
-        {
-            Debug.Log("Singleton-ish architecture violation detected, investigate where NetworkedClient.cs Start() is being called.  Are you creating a second instance of the NetworkedClient game object or has the NetworkedClient.cs been attached to more than one game object?");
+        {          
             Destroy(this.gameObject);
         }
 
